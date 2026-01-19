@@ -5,11 +5,9 @@ import { Readable } from 'stream';
 describe('transferFile.operation', () => {
 	let mockExecuteFunctions: Partial<IExecuteFunctions>;
 	let mockRequest: jest.Mock;
-	let mockHttpRequest: jest.Mock;
 
 	beforeEach(() => {
 		mockRequest = jest.fn();
-		mockHttpRequest = jest.fn();
 
 		mockExecuteFunctions = {
 			getNodeParameter: jest.fn((param: string, _itemIndex: number, defaultValue?: any) => {
@@ -26,7 +24,6 @@ describe('transferFile.operation', () => {
 			}),
 			helpers: {
 				request: mockRequest,
-				httpRequest: mockHttpRequest,
 			} as any,
 		};
 	});
@@ -77,9 +74,16 @@ describe('transferFile.operation', () => {
 			body: mockStream,
 		});
 
-		mockHttpRequest.mockResolvedValue({
+		mockRequest.mockResolvedValueOnce({
 			statusCode: 200,
-			data: 'success',
+			headers: {
+				'content-length': '18',
+			},
+			body: mockStream,
+		}).mockResolvedValueOnce({
+			statusCode: 200,
+			headers: {},
+			body: 'success',
 		});
 
 		const result = await execute.call(mockExecuteFunctions as IExecuteFunctions, 0);
@@ -89,13 +93,14 @@ describe('transferFile.operation', () => {
 			downloadStatus: 200,
 			uploadStatus: 200,
 		});
-		expect(mockRequest).toHaveBeenCalledWith(
+		expect(mockRequest).toHaveBeenCalledTimes(2);
+		expect(mockRequest).toHaveBeenNthCalledWith(1,
 			expect.objectContaining({
 				method: 'GET',
 				url: 'https://download.example.com/file.zip',
 			})
 		);
-		expect(mockHttpRequest).toHaveBeenCalledWith(
+		expect(mockRequest).toHaveBeenNthCalledWith(2,
 			expect.objectContaining({
 				method: 'POST',
 				url: 'https://upload.example.com/upload',
@@ -118,19 +123,20 @@ describe('transferFile.operation', () => {
 			},
 		});
 
-		mockRequest.mockResolvedValue({
+		mockRequest.mockResolvedValueOnce({
 			statusCode: 200,
 			headers: {},
 			body: mockStream,
-		});
-
-		mockHttpRequest.mockResolvedValue({
+		}).mockResolvedValueOnce({
 			statusCode: 200,
+			headers: {},
+			body: {},
 		});
 
 		await execute.call(mockExecuteFunctions as IExecuteFunctions, 0);
 
-		expect(mockHttpRequest).toHaveBeenCalledWith(
+		expect(mockRequest).toHaveBeenCalledTimes(2);
+		expect(mockRequest).toHaveBeenNthCalledWith(2,
 			expect.objectContaining({
 				headers: expect.objectContaining({
 					Authorization: 'Bearer test-token',
@@ -184,19 +190,20 @@ describe('transferFile.operation', () => {
 			},
 		});
 
-		mockRequest.mockResolvedValue({
+		mockRequest.mockResolvedValueOnce({
 			statusCode: 200,
 			headers: {},
 			body: mockStream,
-		});
-
-		mockHttpRequest.mockResolvedValue({
+		}).mockResolvedValueOnce({
 			statusCode: 200,
+			headers: {},
+			body: {},
 		});
 
 		await execute.call(mockExecuteFunctions as IExecuteFunctions, 0);
 
-		expect(mockHttpRequest).toHaveBeenCalledWith(
+		expect(mockRequest).toHaveBeenCalledTimes(2);
+		expect(mockRequest).toHaveBeenNthCalledWith(2,
 			expect.objectContaining({
 				method: 'PUT',
 			})
@@ -218,19 +225,20 @@ describe('transferFile.operation', () => {
 			},
 		});
 
-		mockRequest.mockResolvedValue({
+		mockRequest.mockResolvedValueOnce({
 			statusCode: 200,
 			headers: {},
 			body: mockStream,
-		});
-
-		mockHttpRequest.mockResolvedValue({
+		}).mockResolvedValueOnce({
 			statusCode: 200,
+			headers: {},
+			body: {},
 		});
 
 		await execute.call(mockExecuteFunctions as IExecuteFunctions, 0);
 
-		expect(mockHttpRequest).toHaveBeenCalledWith(
+		expect(mockRequest).toHaveBeenCalledTimes(2);
+		expect(mockRequest).toHaveBeenNthCalledWith(2,
 			expect.objectContaining({
 				headers: expect.objectContaining({
 					'Content-Length': '1024',

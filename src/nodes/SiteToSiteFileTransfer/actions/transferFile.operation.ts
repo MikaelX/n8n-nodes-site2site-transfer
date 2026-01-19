@@ -2,11 +2,10 @@ import type {
 	IExecuteFunctions,
 	INodeExecutionData,
 	INodeProperties,
-	IHttpRequestOptions,
 	IRequestOptions,
 	IDataObject,
 } from 'n8n-workflow';
-import { Readable } from 'stream';
+import { Readable, PassThrough } from 'stream';
 import { extractBearerToken, parseHeaders } from '../GenericFunctions';
 
 export const description: INodeProperties[] = [
@@ -190,7 +189,9 @@ export async function execute(
 		
 		// Handle case where response body is a Buffer instead of a stream
 		if (Buffer.isBuffer(downloadStream)) {
-			downloadStream = Readable.from(downloadStream);
+			// Convert Buffer to stream with optimized buffer size for large file transfers
+			// 256KB provides better throughput for network transfers while keeping memory reasonable
+			downloadStream = Readable.from(downloadStream, { highWaterMark: 256 * 1024 });
 		}
 		
 		// Handle case where response body is an object (parsed JSON) - try to extract data
@@ -227,21 +228,26 @@ export async function execute(
 			);
 		}
 
-		// Start upload request with download stream as body
-		const uploadOptions: IHttpRequestOptions = {
+		// Optimize stream buffer size for large file transfers
+		// Wrap stream with PassThrough to control highWaterMark (256KB for better network throughput)
+		// This reduces system calls while keeping memory usage reasonable (~256KB vs default 64KB)
+		const optimizedStream = new PassThrough({ highWaterMark: 256 * 1024 });
+		downloadStream.pipe(optimizedStream);
+
+		// Start upload request with optimized download stream as body
+		// Use helpers.request() instead of httpRequest() to ensure streaming (httpRequest may buffer)
+		const uploadOptions: IRequestOptions = {
 			method,
 			url: uploadUrl,
 			headers: finalUploadHeaders,
-			body: downloadStream, // Pipe download stream directly
+			body: optimizedStream, // Pipe optimized stream directly - streams without buffering entire file
+			resolveWithFullResponse: true,
 		};
 
-		const uploadResponse = await this.helpers.httpRequest(uploadOptions);
+		const uploadResponse = await this.helpers.request(uploadOptions);
 
 		// Check upload response status
-		const uploadStatusCode = 
-			typeof uploadResponse === 'object' && uploadResponse !== null && 'statusCode' in uploadResponse
-				? (uploadResponse as { statusCode: number }).statusCode
-				: undefined;
+		const uploadStatusCode = uploadResponse.statusCode;
 		
 		if (uploadStatusCode !== undefined) {
 			if (uploadStatusCode < 200 || uploadStatusCode >= 300) {
@@ -273,10 +279,18 @@ export async function execute(
 		};
 
 		// Include response data if available
-		if (typeof uploadResponse === 'object' && uploadResponse !== null) {
-			result.uploadResponse = uploadResponse as IDataObject;
-		} else {
-			result.uploadResponse = uploadResponse;
+		// helpers.request() with resolveWithFullResponse returns { statusCode, headers, body }
+		if (uploadResponse.body !== undefined) {
+			// Try to parse JSON if possible, otherwise return as-is
+			try {
+				if (typeof uploadResponse.body === 'string') {
+					result.uploadResponse = JSON.parse(uploadResponse.body);
+				} else {
+					result.uploadResponse = uploadResponse.body as IDataObject;
+				}
+			} catch {
+				result.uploadResponse = uploadResponse.body as IDataObject;
+			}
 		}
 
 		return {
