@@ -58,6 +58,9 @@
 	"peerDependencies": {
 		"n8n-workflow": "^1.120.0"
 	},
+	"resolutions": {
+		"form-data": ">=4.0.4"
+	},
 	"packageManager": "yarn@1.22.0",
 	"engines": {
 		"npm": "please-use-yarn",
