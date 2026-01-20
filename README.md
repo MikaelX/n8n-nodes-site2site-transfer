@@ -1,5 +1,12 @@
 # n8n-nodes-site-to-site-file-transfer
 
+[![npm version](https://img.shields.io/npm/v/n8n-nodes-site-to-site-file-transfer.svg)](https://www.npmjs.com/package/n8n-nodes-site-to-site-file-transfer)
+[![npm downloads](https://img.shields.io/npm/dm/n8n-nodes-site-to-site-file-transfer.svg)](https://www.npmjs.com/package/n8n-nodes-site-to-site-file-transfer)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)](https://nodejs.org/)
+[![GitHub](https://img.shields.io/github/stars/MikaelX/n8n-nodes-site-to-site-file-transfer?style=social)](https://github.com/MikaelX/n8n-nodes-site-to-site-file-transfer)
+
 An n8n community node designed to **dramatically reduce memory usage** when transferring large files. Instead of loading entire files into memory (which can cause n8n to run out of memory with large files), this node streams files directly from a download URL to an upload URL using Node.js streams.
 
 ## Why This Node?
