@@ -77,15 +77,40 @@ yarn build:watch
    - Configure the download and upload URLs
    - Execute the workflow
 
+## UI Reference
+
+The node configuration interface in n8n provides an intuitive way to configure file transfers:
+
+![Site to Site File Transfer Node Configuration](docs/images/node-configuration.png)
+
+**Configuration Panel Overview:**
+- **Parameters Tab**: Configure download/upload URLs, headers, HTTP method, and error handling
+- **Settings Tab**: Additional node-level settings
+- **Execute Step**: Test the node configuration
+- **Docs**: Access node documentation
+
+**Key Parameters:**
+- **Download URL**: Source file URL (supports n8n expressions like `{{ $json.download_url }}`)
+- **Upload URL**: Destination URL (supports expressions and bearer tokens in query string)
+- **Content Length**: Optional file size in bytes (auto-detected if not provided)
+- **HTTP Method**: Choose between POST (default) or PUT
+- **Download/Upload Headers**: JSON objects for custom headers
+- **Throw Error on Non-2xx**: Toggle error handling behavior
+
 ## Usage
 
 ### Basic Transfer
 
 1. Add the "Site to Site File Transfer" node to your workflow
-2. Configure:
+2. Configure the parameters (see [UI Reference](#ui-reference) above for visual guide):
    - **Download URL**: The URL to download the file from (e.g., Google Cloud Storage signed URL)
    - **Upload URL**: The URL to upload the file to (e.g., your API endpoint)
 3. Execute the workflow
+
+**Tip**: You can use n8n expressions in the URL fields, for example:
+- `{{ $json.download_url }}` - Use download URL from previous node
+- `{{ $json.upload_url }}` - Use upload URL from previous node
+- `{{ $json.filesize }}` - Use file size from previous node
 
 The node will automatically:
 - Stream the file from the download URL
