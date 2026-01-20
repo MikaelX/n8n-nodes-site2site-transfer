@@ -1,7 +1,7 @@
 #!/bin/bash
-# Setup symlink for Site to Site File Transfer node development
+# Setup symlink for Stream File Transfer node development
 
-echo "Setting up symlink for Site to Site File Transfer node..."
+echo "Setting up symlink for Stream File Transfer node..."
 
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

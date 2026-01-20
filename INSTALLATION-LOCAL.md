@@ -1,6 +1,6 @@
 # Local Development Installation
 
-This guide explains how to set up the Site to Site File Transfer node for local development with n8n.
+This guide explains how to set up the Stream File Transfer node for local development with n8n.
 
 ## Quick Setup
 
@@ -83,7 +83,7 @@ n8n automatically loads community nodes from `~/.n8n/custom/` directory. The sym
 1. Start n8n
 2. Create a new workflow
 3. Click "Add Node"
-4. Search for "Site to Site File Transfer"
+4. Search for "Stream File Transfer"
 5. The node should appear in the results
 
 ## Troubleshooting

@@ -1,7 +1,7 @@
 /**
  * Generic Utility Functions
  * 
- * Shared utility functions used by the Site to Site File Transfer node.
+ * Shared utility functions used by the Stream File Transfer node.
  * Provides helper functions for parsing headers and extracting authentication tokens.
  * 
  * Functions:

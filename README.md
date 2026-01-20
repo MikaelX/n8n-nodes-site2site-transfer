@@ -80,7 +80,7 @@ yarn build:watch
 1. **Install the package** (see Installation above)
 2. **Add the Node:**
    - Create a new workflow in n8n
-   - Add the **Site to Site File Transfer** node
+   - Add the **Stream File Transfer** node
    - Configure the download and upload URLs
    - Execute the workflow
 
@@ -88,7 +88,7 @@ yarn build:watch
 
 The node configuration interface in n8n provides an intuitive way to configure file transfers:
 
-![Site to Site File Transfer Node Configuration](docs/images/node-configuration.png)
+![Stream File Transfer Node Configuration](docs/images/node-configuration.png)
 
 **Configuration Panel Overview:**
 - **Parameters Tab**: Configure download/upload URLs, headers, HTTP method, and error handling
@@ -108,7 +108,7 @@ The node configuration interface in n8n provides an intuitive way to configure f
 
 ### Basic Transfer
 
-1. Add the "Site to Site File Transfer" node to your workflow
+1. Add the "Stream File Transfer" node to your workflow
 2. Configure the parameters (see [UI Reference](#ui-reference) above for visual guide):
    - **Download URL**: The URL to download the file from (e.g., Google Cloud Storage signed URL)
    - **Upload URL**: The URL to upload the file to (e.g., your API endpoint)
@@ -328,9 +328,9 @@ The download URL is not accessible. Verify:
 n8n-nodes-stream-file-transfer/
 ├── src/
 │   └── nodes/
-│       └── SiteToSiteFileTransfer/
-│           ├── SiteToSiteFileTransfer.node.ts    # Main node implementation
-│           ├── SiteToSiteFileTransfer.node.json  # Node metadata
+│       └── StreamFileTransfer/
+│           ├── StreamFileTransfer.node.ts    # Main node implementation
+│           ├── StreamFileTransfer.node.json  # Node metadata
 │           ├── GenericFunctions.ts                # Shared utility functions
 │           ├── transfer.svg                       # Node icon (azure blue dual globe)
 │           └── actions/                           # Operation implementations

@@ -1,4 +1,4 @@
-# Testing Site to Site File Transfer Node
+# Testing Stream File Transfer Node
 
 ## Quick Test
 
@@ -76,7 +76,7 @@ yarn add /path/to/n8n-nodes-stream-file-transfer
 1. Open n8n in your browser (usually `http://localhost:5678`)
 2. Create a new workflow
 3. Click **Add Node**
-4. Search for **"Site to Site File Transfer"**
+4. Search for **"Stream File Transfer"**
 5. You should see the node in the results
 6. Add the node and verify:
    - All fields are visible (Download URL, Upload URL, etc.)
@@ -86,7 +86,7 @@ yarn add /path/to/n8n-nodes-stream-file-transfer
 
 ### Test Basic File Transfer
 
-1. Add Site to Site File Transfer node
+1. Add Stream File Transfer node
 2. Configure:
    - **Download URL**: A publicly accessible file URL (e.g., `https://example.com/test-file.zip`)
    - **Upload URL**: An endpoint that accepts file uploads (e.g., `https://httpbin.org/post`)
@@ -96,7 +96,7 @@ yarn add /path/to/n8n-nodes-stream-file-transfer
 
 ### Test with Bearer Token in URL
 
-1. Add Site to Site File Transfer node
+1. Add Stream File Transfer node
 2. Configure:
    - **Download URL**: A publicly accessible file URL
    - **Upload URL**: An endpoint with bearer token in query string (e.g., `https://api.example.com/upload?bearer=your-token-here`)
@@ -106,7 +106,7 @@ yarn add /path/to/n8n-nodes-stream-file-transfer
 
 ### Test with Custom Headers
 
-1. Add Site to Site File Transfer node
+1. Add Stream File Transfer node
 2. Configure:
    - **Download URL**: A file URL that requires authentication
    - **Download Headers**: 
@@ -128,7 +128,7 @@ yarn add /path/to/n8n-nodes-stream-file-transfer
 
 ### Test PUT Method
 
-1. Add Site to Site File Transfer node
+1. Add Stream File Transfer node
 2. Configure:
    - **Download URL**: A file URL
    - **Upload URL**: An endpoint that accepts PUT requests
@@ -138,7 +138,7 @@ yarn add /path/to/n8n-nodes-stream-file-transfer
 
 ### Test Error Handling
 
-1. Add Site to Site File Transfer node
+1. Add Stream File Transfer node
 2. Configure:
    - **Download URL**: An invalid or inaccessible URL
    - **Upload URL**: A valid upload endpoint
@@ -148,7 +148,7 @@ yarn add /path/to/n8n-nodes-stream-file-transfer
 
 ### Test Error Handling (Continue on Fail)
 
-1. Add Site to Site File Transfer node
+1. Add Stream File Transfer node
 2. Configure:
    - **Download URL**: An invalid URL
    - **Upload URL**: A valid upload endpoint
@@ -160,7 +160,7 @@ yarn add /path/to/n8n-nodes-stream-file-transfer
 
 ### Node Not Appearing
 - Check build: `yarn build`
-- Verify dist folder exists: `ls -la dist/nodes/SiteToSiteFileTransfer/`
+- Verify dist folder exists: `ls -la dist/nodes/StreamFileTransfer/`
 - Check n8n logs for errors
 - Restart n8n
 

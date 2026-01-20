@@ -1,7 +1,7 @@
 /**
  * Actions Index
  * 
- * Exports all available operations/actions for the Site to Site File Transfer node.
+ * Exports all available operations/actions for the Stream File Transfer node.
  * Currently contains a single operation: transferFile
  * 
  * This module serves as the central registry for all node operations,

@@ -1,6 +1,6 @@
 # Images Directory
 
-This directory contains screenshots and visual references for the Site to Site File Transfer node.
+This directory contains screenshots and visual references for the Stream File Transfer node.
 
 ## Files
 
