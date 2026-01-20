@@ -1,11 +1,11 @@
-# n8n-nodes-site-to-site-file-transfer
+# n8n-nodes-stream-file-transfer
 
-[![npm version](https://img.shields.io/npm/v/n8n-nodes-site-to-site-file-transfer.svg)](https://www.npmjs.com/package/n8n-nodes-site-to-site-file-transfer)
-[![npm downloads](https://img.shields.io/npm/dm/n8n-nodes-site-to-site-file-transfer.svg)](https://www.npmjs.com/package/n8n-nodes-site-to-site-file-transfer)
+[![npm version](https://img.shields.io/npm/v/n8n-nodes-stream-file-transfer.svg)](https://www.npmjs.com/package/n8n-nodes-stream-file-transfer)
+[![npm downloads](https://img.shields.io/npm/dm/n8n-nodes-stream-file-transfer.svg)](https://www.npmjs.com/package/n8n-nodes-stream-file-transfer)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)](https://nodejs.org/)
-[![GitHub](https://img.shields.io/github/stars/MikaelX/n8n-nodes-site-to-site-file-transfer?style=social)](https://github.com/MikaelX/n8n-nodes-site-to-site-file-transfer)
+[![GitHub](https://img.shields.io/github/stars/MikaelX/n8n-nodes-stream-file-transfer?style=social)](https://github.com/MikaelX/n8n-nodes-stream-file-transfer)
 
 An n8n community node designed to **dramatically reduce memory usage** when transferring large files. Instead of loading entire files into memory (which can cause n8n to run out of memory with large files), this node streams files directly from a download URL to an upload URL using Node.js streams.
 
@@ -34,9 +34,9 @@ An n8n community node designed to **dramatically reduce memory usage** when tran
 ### Install from npm (Recommended)
 
 ```bash
-npm install n8n-nodes-site-to-site-file-transfer
+npm install n8n-nodes-stream-file-transfer
 # or
-yarn add n8n-nodes-site-to-site-file-transfer
+yarn add n8n-nodes-stream-file-transfer
 ```
 
 After installation, restart your n8n instance. The node will be automatically available.
@@ -45,13 +45,13 @@ After installation, restart your n8n instance. The node will be automatically av
 
 ```bash
 # Build the node first
-cd /path/to/n8n-nodes-site-to-site-file-transfer
+cd /path/to/n8n-nodes-stream-file-transfer
 yarn build
 
 # Install from local path
-npm install /path/to/n8n-nodes-site-to-site-file-transfer
+npm install /path/to/n8n-nodes-stream-file-transfer
 # or
-yarn add /path/to/n8n-nodes-site-to-site-file-transfer
+yarn add /path/to/n8n-nodes-stream-file-transfer
 
 # Restart n8n
 ```
@@ -62,8 +62,8 @@ For local development and testing:
 
 ```bash
 # Clone the repository
-git clone https://github.com/MikaelX/n8n-nodes-site-to-site-file-transfer.git
-cd n8n-nodes-site-to-site-file-transfer
+git clone https://github.com/MikaelX/n8n-nodes-stream-file-transfer.git
+cd n8n-nodes-stream-file-transfer
 
 # Install dependencies
 yarn install
@@ -325,7 +325,7 @@ The download URL is not accessible. Verify:
 ## Project Structure
 
 ```
-n8n-nodes-site-to-site-file-transfer/
+n8n-nodes-stream-file-transfer/
 ├── src/
 │   └── nodes/
 │       └── SiteToSiteFileTransfer/
@@ -355,8 +355,8 @@ n8n-nodes-site-to-site-file-transfer/
 
 ```bash
 # Clone the repository
-git clone https://github.com/MikaelX/n8n-nodes-site-to-site-file-transfer.git
-cd n8n-nodes-site-to-site-file-transfer
+git clone https://github.com/MikaelX/n8n-nodes-stream-file-transfer.git
+cd n8n-nodes-stream-file-transfer
 
 # Install dependencies
 yarn install
@@ -409,7 +409,7 @@ MIT License - see LICENSE file for details.
 ## Support
 
 For issues, feature requests, or questions:
-- Open an issue on [GitHub](https://github.com/MikaelX/n8n-nodes-site-to-site-file-transfer/issues)
+- Open an issue on [GitHub](https://github.com/MikaelX/n8n-nodes-stream-file-transfer/issues)
 - Check the [n8n Community Forum](https://community.n8n.io/)
 
 ## Contributing

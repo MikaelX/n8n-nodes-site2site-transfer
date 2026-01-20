@@ -17,12 +17,12 @@ yarn build
 mkdir -p ~/.n8n/custom
 
 # Remove old copy if it exists
-rm -rf ~/.n8n/custom/n8n-nodes-site-to-site-file-transfer
+rm -rf ~/.n8n/custom/n8n-nodes-stream-file-transfer
 
 # Create symlink to dist folder (so updates are automatic)
-ln -sfn "$PROJECT_DIR/dist" ~/.n8n/custom/n8n-nodes-site-to-site-file-transfer
+ln -sfn "$PROJECT_DIR/dist" ~/.n8n/custom/n8n-nodes-stream-file-transfer
 
-echo "✓ Symlink created: ~/.n8n/custom/n8n-nodes-site-to-site-file-transfer -> $PROJECT_DIR/dist"
+echo "✓ Symlink created: ~/.n8n/custom/n8n-nodes-stream-file-transfer -> $PROJECT_DIR/dist"
 echo ""
 echo "Now when you run 'yarn build:watch' in this folder:"
 echo "  1. TypeScript watch will rebuild to dist/"
