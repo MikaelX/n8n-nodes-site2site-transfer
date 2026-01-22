@@ -108,6 +108,35 @@ export const description: INodeProperties[] = [
 		default: true,
 		description: 'Whether to throw an error and fail execution when the API returns a 3xx, 4xx, or 5xx status code',
 	},
+	{
+		displayName: 'Options',
+		name: 'options',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		options: [
+			{
+				displayName: 'Download Timeout (seconds)',
+				name: 'downloadTimeout',
+				type: 'number',
+				default: 0,
+				description: 'Timeout in seconds for download request (0 = no timeout). Default: 0 (unlimited)',
+				typeOptions: {
+					minValue: 0,
+				},
+			},
+			{
+				displayName: 'Upload Timeout (seconds)',
+				name: 'uploadTimeout',
+				type: 'number',
+				default: 300,
+				description: 'Timeout in seconds for upload request. Default: 300 (5 minutes). Increase for large files.',
+				typeOptions: {
+					minValue: 1,
+				},
+			},
+		],
+	},
 ];
 
 /**
@@ -147,6 +176,15 @@ export async function execute(
 		| string
 		| IDataObject;
 	const throwOnError = this.getNodeParameter('throwOnError', itemIndex, true) as boolean;
+	const options = this.getNodeParameter('options', itemIndex, {}) as {
+		downloadTimeout?: number;
+		uploadTimeout?: number;
+	};
+	// Convert seconds to milliseconds for timeout values
+	const downloadTimeoutSeconds = options.downloadTimeout ?? 0;
+	const uploadTimeoutSeconds = options.uploadTimeout ?? 300;
+	const downloadTimeout = downloadTimeoutSeconds * 1000;
+	const uploadTimeout = uploadTimeoutSeconds * 1000;
 
 	// Validate required parameters
 	if (!downloadUrl || downloadUrl.trim() === '') {
@@ -198,10 +236,10 @@ export async function execute(
 		// We use Node.js native http/https modules instead of n8n's helpers.request()
 		// because n8n's helper may buffer responses even with encoding: null/stream.
 		// Native HTTP always returns streams, guaranteeing no buffering.
-		
+
 		const downloadUrlObj = new URL(downloadUrl);
 		const downloadClient = downloadUrlObj.protocol === 'https:' ? https : http;
-		
+
 		// Create download request using native HTTP client
 		const downloadStream = await new Promise<{ stream: NodeJS.ReadableStream; statusCode: number; headers: http.IncomingHttpHeaders }>((resolve, reject) => {
 			const downloadOptions = {
@@ -215,7 +253,7 @@ export async function execute(
 			// Create the HTTP request
 			const req = downloadClient.request(downloadOptions, (res) => {
 				const statusCode = res.statusCode || 0;
-				
+
 				// Validate download response status
 				if (statusCode < 200 || statusCode >= 300) {
 					res.destroy(); // Clean up failed response
@@ -251,6 +289,14 @@ export async function execute(
 				reject(new Error(`Download request failed: ${error.message}`));
 			});
 
+			// Set timeout if configured (0 means no timeout)
+			if (downloadTimeout > 0) {
+				req.setTimeout(downloadTimeout, () => {
+					req.destroy();
+					reject(new Error(`Download request timeout: ${downloadTimeoutSeconds} seconds exceeded`));
+				});
+			}
+
 			// Send the request
 			req.end();
 		});
@@ -269,20 +315,21 @@ export async function execute(
 		// We use n8n's helpers.request() for upload because it correctly
 		// handles stream bodies and provides good integration with n8n's
 		// error handling and response parsing.
-		
+
 		const uploadOptions: IRequestOptions = {
 			method,
 			url: uploadUrl,
 			headers: finalUploadHeaders,
 			body: downloadStream.stream, // Pipe native HTTP stream directly - guaranteed streaming
 			resolveWithFullResponse: true,
+			timeout: uploadTimeout, // Set timeout for upload request
 		};
 
 		const uploadResponse = await this.helpers.request(uploadOptions);
 
 		// Validate upload response status
 		const uploadStatusCode = uploadResponse.statusCode;
-		
+
 		if (uploadStatusCode !== undefined) {
 			if (uploadStatusCode < 200 || uploadStatusCode >= 300) {
 				// Upload failed - handle according to error handling configuration
@@ -344,19 +391,19 @@ export async function execute(
 		// ====================================================================
 		// Catch any errors during download or upload and handle according to
 		// the node's error handling configuration (throwOnError parameter)
-		
+
 		const errorMessage = error instanceof Error ? error.message : String(error);
-		
+
 		// Enhance error message with context (URLs) if not already included
 		const enhancedMessage = errorMessage.includes('Download URL') || errorMessage.includes('Upload URL')
 			? errorMessage
 			: `File transfer failed: ${errorMessage}. Download URL: ${downloadUrl}, Upload URL: ${uploadUrl}`;
-		
+
 		if (throwOnError) {
 			// Throw error to stop workflow execution
 			throw new Error(enhancedMessage);
 		}
-		
+
 		// Return error result instead of throwing (allows workflow to continue)
 		return {
 			json: {

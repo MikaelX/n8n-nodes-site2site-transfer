@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-stream-file",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "n8n node for streaming file transfers between URLs without loading files into memory",
 	"keywords": [
 		"n8n-community-node-package",
